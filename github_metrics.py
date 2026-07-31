@@ -48,13 +48,7 @@ class GithubMetrics:
 
         self.filename = filename
         self.token = token
-        # PyGithub's default retry policy (total=10) can silently backoff
-        # 60s+ per retry on a single request that hits GitHub's secondary
-        # rate limit or a transient 5xx, hanging for 10+ minutes with no
-        # visible error. Capping retries here makes failures surface in a
-        # couple minutes instead, so a single problematic repo can't stall
-        # the whole run indefinitely.
-        self.g = Github(token, per_page=100, lazy=True, retry=GithubRetry(total=3))
+        self.g = Github(token, per_page=100, lazy=True, retry=GithubRetry(total=0))
 
     def _check_rate_limit(self, buffer=200):
         try:
@@ -71,6 +65,13 @@ class GithubMetrics:
         except Exception as e:
             print(f"Error checking rate limit: {e}")
 
+    def _record_error(self, repo_data, message):
+        """Log an error and flag this repo's data as incomplete, instead of
+        letting a failed fetch look identical to a genuine zero in the
+        output JSON."""
+        print(f"  {message}")
+        repo_data.setdefault("errors", []).append(message)
+
     def _in_period(self, dt):
         """Whether a tz-aware datetime falls within [start_date, end_date]."""
         if self.start_date and dt < self.start_date:
@@ -79,24 +80,28 @@ class GithubMetrics:
             return False
         return True
 
-    def _get_repo_stats(self, repo, max_wait=30, interval=2):
+    def _get_repo_stats(self, repo, repo_data, max_wait=30, interval=2):
         """GitHub computes contributor stats asynchronously; a repo that
         hasn't been queried recently returns None (202) while it builds the
-        cache, so we poll briefly instead of failing."""
-        waited = 0
-        try:
-            self._check_rate_limit()
-            while waited <= max_wait:
+        cache, so we poll briefly instead of failing.
+
+        Uses a real wall-clock deadline rather than counting sleep() calls,
+        since a single get_stats_contributors() call can itself take a while
+        internally (retrying on a transient error) - counting only our own
+        sleeps would let the loop run well past max_wait if that happens."""
+        deadline = time.monotonic() + max_wait
+        self._check_rate_limit()
+        while time.monotonic() < deadline:
+            try:
                 stats = repo.get_stats_contributors()
-                if stats is not None:
-                    return stats
-                time.sleep(interval)
-                waited += interval
-            print(f"  Stats not ready for {repo.name} after {max_wait}s, skipping")
-            return []
-        except Exception as e:
-            print(f"  Error getting stats for {repo.name}: {e}")
-            return []
+            except Exception as e:
+                self._record_error(repo_data, f"Error getting stats for {repo.name}: {e}")
+                return []
+            if stats is not None:
+                return stats
+            time.sleep(interval)
+        self._record_error(repo_data, f"Stats not ready for {repo.name} after {max_wait}s, skipping")
+        return []
 
     # ---- Locations + Heat (committer side) -------------------------------
 
@@ -134,7 +139,7 @@ class GithubMetrics:
             print(f"  Found {len(contributors)} committers ({sum(1 for c in contributors.values() if c['is_new'])} new)")
 
         except Exception as e:
-            print(f"  Error getting contributors for {repo_data['name']}: {e}")
+            self._record_error(repo_data, f"Error getting contributors for {repo_data['name']}: {e}")
             repo_data["contributors"] = []
             repo_data["committer_count"] = 0
 
@@ -157,7 +162,7 @@ class GithubMetrics:
             print(f"  Found {repo_data['total_commit_count']} commits")
 
         except Exception as e:
-            print(f"  Error getting commit data for {repo_data['name']}: {e}")
+            self._record_error(repo_data, f"Error getting commit data for {repo_data['name']}: {e}")
             repo_data["total_commit_count"] = 0
             repo_data["commits_per_week"] = {}
 
@@ -171,7 +176,7 @@ class GithubMetrics:
             # subscribers_count is the real "subscribed to updates" watcher count.
             repo_data["watchers_count"] = repo.subscribers_count
         except Exception as e:
-            print(f"  Error getting light metrics for {repo.name}: {e}")
+            self._record_error(repo_data, f"Error getting light metrics for {repo.name}: {e}")
             repo_data["stargazers_count"] = 0
             repo_data["watchers_count"] = 0
 
@@ -182,11 +187,14 @@ class GithubMetrics:
         try:
             repo_data["forks_count"] = repo.forks_count
         except Exception as e:
-            print(f"  Error getting fork count for {repo.name}: {e}")
+            self._record_error(repo_data, f"Error getting fork count for {repo.name}: {e}")
             repo_data["forks_count"] = 0
 
+        # merged_count lives outside the try so a mid-loop failure (e.g. a
+        # timeout on one PR's merge check) keeps whatever was already
+        # tallied instead of discarding the whole count back to 0.
+        merged_count = 0
         try:
-            merged_count = 0
             if self.start_date:
                 pulls = repo.get_pulls(state="closed", sort="updated", direction="desc")
                 for i, pr in enumerate(pulls):
@@ -201,10 +209,9 @@ class GithubMetrics:
                         and (not self.end_date or pr.merged_at <= self.end_date)
                     ):
                         merged_count += 1
-            repo_data["merged_pr_count"] = merged_count
         except Exception as e:
-            print(f"  Error getting merged PRs for {repo.name}: {e}")
-            repo_data["merged_pr_count"] = 0
+            self._record_error(repo_data, f"Error getting merged PRs for {repo.name} (partial count kept): {e}")
+        repo_data["merged_pr_count"] = merged_count
 
     # ---- Orchestration -------------------------------------------------------
 
@@ -237,13 +244,20 @@ class GithubMetrics:
                 "name": repo.name,
                 "url": repo.html_url,
                 "description": repo.description,
+                "errors": [],
             }
 
-            stats = self._get_repo_stats(repo)
+            stats = self._get_repo_stats(repo, repo_data)
             self.get_commit_data(repo_data, stats)
             self.get_contributors(repo_data, stats)
             self.get_light_metrics(repo, repo_data)
             self.get_love_metrics(repo, repo_data)
+
+            # A repo with any recorded error has unreliable numbers (partial
+            # or zeroed-out counts) rather than genuinely being inactive -
+            # data_complete lets downstream rendering (or you) distinguish
+            # "really 0" from "we couldn't fetch this."
+            repo_data["data_complete"] = len(repo_data["errors"]) == 0
 
             data["repos"].append(repo_data)
 
