@@ -61,6 +61,7 @@ yarn-debug.log*
 dist/
 build/
 target/
+_site/
 
 # Terraform
 .terraform/
