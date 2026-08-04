@@ -2,7 +2,7 @@
   "name": "year-in-review",
   "description": "A Year in Review prototype documenting the OSPOs impact and activity.",
   "longDescription": "A single-page, self-contained web report that summarizes a year of the CMS Open Source Program Office activity and impact on GitHub. Inspired by the Twitter Open Source Year in Review format, the prototype reframes standard OSS health metrics \u2014 commits, contributors, stars, watchers, forks, and merged pull requests \u2014 around the DSACMS repository maturity model, in which a project growth is visualized as a tree maturing from a private seedling (Tier 0) to a community-governed tree (Tier 4).",
-  "status": "Release Candidate",
+  "status": "Development",
   "permissions": {
     "licenses": [
       {
@@ -60,14 +60,11 @@
   "repositoryType": "website",
   "userInput": false,
   "fismaLevel": "low",
-  "group": "OSPO",
+  "group": "HHS/CMS/OHTP/OSPG/OSPO",
   "projects": [],
   "systems": [],
   "subsetInHealthcare": [
-    "policy",
-    "operational",
-    "medicare",
-    "medicaid"
+    "operational"
   ],
   "userType": [
     "providers",
