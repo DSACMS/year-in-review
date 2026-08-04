@@ -10,7 +10,9 @@ Roles to include, but not limited to: Project Owner, Technical Lead, Developers/
 
 | Role   | Name    | Affiliation    |
 | :----- | :------ | :------------- |
-| {role} | {names} | {affiliations} |
+| Engineer | Kiran Sheikh | CIF Software Engineering Fellow |
+| Engineer | Zion Muhammud | CIF Software Engineering Fellow |
+| Engineer | Isaac Guzman | CIF Software Engineering Fellow |
 
 <!-- TODO: A CODEOWNERS.md file is available in .github to define individuals responsible for specific parts of the codebase. Provide a reference to this file if used:
 
