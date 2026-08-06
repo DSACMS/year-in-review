@@ -1,6 +1,6 @@
 // Points at one generated snapshot from metrics_data/data/ (see scripts/generate_metrics.py).
 // Update this filename to feature a different run.
-const DATA_FILE = "metrics_2026-06-08_to_2026-07-31.json";
+const DATA_FILE = "metrics_2026-06-08_to_2026-07-31_filtered_multi.json";
 
 const EMPTY_DATA = {
   period: { start: null, end: null },
