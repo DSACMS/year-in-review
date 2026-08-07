@@ -308,7 +308,7 @@ class GithubMetrics:
         merged_count = 0
         try:
             if self.start_date:
-                pulls = repo.get_pulls(state="closed", sort="updated", direction="desc") 
+                pulls = repo.get_pulls(state="closed", sort="updated", direction="desc")
                 for i, pr in enumerate(pulls):
                     if i % 500 == 0:
                         self._check_rate_limit()
