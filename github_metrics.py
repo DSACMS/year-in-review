@@ -26,6 +26,9 @@ from datetime import datetime, timezone
 import json
 import os
 import time
+import shutil
+import tempfile
+import subprocess
 
 
 class GithubMetrics:
@@ -105,11 +108,120 @@ class GithubMetrics:
 
     # ---- Locations + Heat (committer side) -------------------------------
 
-    def get_contributors(self, repo_data, stats):
+    def _get_contributors_via_git(self, repo, repo_data):
+        """
+        Clones the repository locally and uses git log to reliably extract
+        contributor commit activity within [start_date, end_date], for repos
+        where the stats API is unreliable (>100 contributors).
+
+        Note: git log cannot provide GitHub `location`/`company` metadata,
+        since those live on the GitHub user account, not in commit data.
+        Those fields are set to None for contributors sourced this way.
+        A contributor is "new" if their first-ever commit (across all of
+        history) falls within the report period.
+        """
+        temp_dir = tempfile.mkdtemp()
+        try:
+            print(f"Cloning {repo.name} to parse git history...")
+            clone_url = repo.clone_url
+            if self.token:
+                clone_url = clone_url.replace("https://", f"https://x-access-token:{self.token}@")
+
+            # Full clone required (no --depth 1) since we need complete history
+            # to determine each contributor's true first commit.
+            subprocess.run(
+                ["git", "clone", "--quiet", clone_url, temp_dir],
+                check=True
+            )
+
+            git_log_cmd = [
+                "git", "-C", temp_dir, "log",
+                "--all",
+                "--format=%an <%ae>|%aI"
+            ]
+            result = subprocess.run(git_log_cmd, capture_output=True, text=True, check=True)
+
+            # author name -> earliest commit datetime seen (across all history)
+            author_first_commit = {}
+            # author name -> commit count within the report period
+            author_period_commits = {}
+
+            for line in result.stdout.strip().split("\n"):
+                if not line or "|" not in line:
+                    continue
+
+                author, iso_date_str = line.split("|", 1)
+                commit_dt = datetime.fromisoformat(iso_date_str).replace(tzinfo=None)
+
+                if author not in author_first_commit or commit_dt < author_first_commit[author]:
+                    author_first_commit[author] = commit_dt
+
+                in_period = (
+                    (not self.start_date or commit_dt >= self.start_date) and
+                    (not self.end_date or commit_dt <= self.end_date)
+                )
+                if in_period:
+                    author_period_commits[author] = author_period_commits.get(author, 0) + 1
+
+            contributors = {}
+            for author, commit_count in author_period_commits.items():
+                # name comes through as "Name <email>" from the format string above
+                if "<" in author and ">" in author:
+                    name = author.rsplit(" <", 1)[0]
+                else:
+                    name = author
+
+                first_date = author_first_commit[author]
+                is_new = (
+                    (not self.start_date or first_date >= self.start_date) and
+                    (not self.end_date or first_date <= self.end_date)
+                )
+
+                contributors[name] = {
+                    "name": name,
+                    "location": None,
+                    "company": None,
+                    "commit_count": commit_count,
+                    "is_new": is_new,
+                }
+
+            repo_data["contributors"] = list(contributors.values())
+            repo_data["committer_count"] = len(contributors)
+            print(
+                f"  Found {len(contributors)} committers via local git log "
+                f"({sum(1 for c in contributors.values() if c['is_new'])} new)"
+            )
+
+        except Exception as e:
+            self._record_error(repo_data, f"Error processing git log for {repo.name}: {e}")
+            repo_data["contributors"] = []
+            repo_data["committer_count"] = 0
+        finally:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+
+    def get_contributors(self, repo, repo_data, stats):
         """New/active contributors for the period, including self-reported
         location (Locations section) and company (kept for context).
         A contributor is "new" if none of their commits (per the stats
-        endpoint) predate the report period's start."""
+        endpoint) predate the report period's start.
+
+        For repos with more than 100 contributors, the stats endpoint
+        becomes unreliable, so contributor data is instead derived by
+        cloning the repo and parsing `git log` directly.
+        """
+        try:
+            contributors_count = repo.get_contributors().totalCount
+        except Exception:
+            contributors_count = 101  # fail safe -> use git log fallback
+
+        if contributors_count > 100:
+            print(
+                f"Repository {repo.name} has more than 100 contributors. "
+                f"Using local git log to determine contributor activity."
+            )
+            self._get_contributors_via_git(repo, repo_data)
+            return
+
         try:
             contributors = {}
 
@@ -196,7 +308,7 @@ class GithubMetrics:
         merged_count = 0
         try:
             if self.start_date:
-                pulls = repo.get_pulls(state="closed", sort="updated", direction="desc")
+                pulls = repo.get_pulls(state="closed", sort="updated", direction="desc") # 
                 for i, pr in enumerate(pulls):
                     if i % 500 == 0:
                         self._check_rate_limit()
@@ -249,7 +361,7 @@ class GithubMetrics:
 
             stats = self._get_repo_stats(repo, repo_data)
             self.get_commit_data(repo_data, stats)
-            self.get_contributors(repo_data, stats)
+            self.get_contributors(repo, repo_data, stats)
             self.get_light_metrics(repo, repo_data)
             self.get_love_metrics(repo, repo_data)
 
