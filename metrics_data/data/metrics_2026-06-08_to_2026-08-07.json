@@ -1,24 +1,34 @@
 {
   "period": {
     "start": "2026-06-08",
-    "end": "2026-07-31"
+    "end": "2026-08-07"
   },
-  "generated_at": "2026-08-01T00:17:23.720247+00:00",
-  "total_repo_count": 89,
+  "generated_at": "2026-08-08T00:35:44.993933+00:00",
+  "total_repo_count": 90,
   "repos": [
     {
       "name": ".github",
       "url": "https://github.com/DSACMS/.github",
       "description": "Template repo for CMS Open Source Projects",
       "errors": [],
-      "total_commit_count": 0,
-      "commits_per_week": {},
-      "contributors": [],
-      "committer_count": 0,
-      "stargazers_count": 3,
+      "total_commit_count": 3,
+      "commits_per_week": {
+        "2026-W30": 3
+      },
+      "contributors": [
+        {
+          "name": "natalialuzuriaga",
+          "location": "San Francisco, CA",
+          "company": "@CMSgov (work) + personal projects",
+          "commit_count": 3,
+          "is_new": false
+        }
+      ],
+      "committer_count": 1,
+      "stargazers_count": 4,
       "watchers_count": 2,
       "forks_count": 2,
-      "merged_pr_count": 0,
+      "merged_pr_count": 1,
       "data_complete": true
     },
     {
@@ -75,7 +85,7 @@
       "commits_per_week": {},
       "contributors": [],
       "committer_count": 0,
-      "stargazers_count": 9,
+      "stargazers_count": 10,
       "watchers_count": 3,
       "forks_count": 5,
       "merged_pr_count": 0,
@@ -146,9 +156,10 @@
       "url": "https://github.com/DSACMS/repo-scaffolder",
       "description": "Templates and commandline tools for creating repositories for US Federal open source projects ",
       "errors": [],
-      "total_commit_count": 2,
+      "total_commit_count": 9,
       "commits_per_week": {
-        "2026-W29": 1,
+        "2026-W29": 4,
+        "2026-W30": 4,
         "2026-W26": 1
       },
       "contributors": [
@@ -156,7 +167,14 @@
           "name": "kmsheikh",
           "location": "Los Angeles, CA",
           "company": null,
-          "commit_count": 1,
+          "commit_count": 2,
+          "is_new": true
+        },
+        {
+          "name": "isaac-rtc",
+          "location": "New York, NY",
+          "company": null,
+          "commit_count": 6,
           "is_new": true
         },
         {
@@ -167,11 +185,11 @@
           "is_new": false
         }
       ],
-      "committer_count": 2,
-      "stargazers_count": 45,
+      "committer_count": 3,
+      "stargazers_count": 47,
       "watchers_count": 3,
       "forks_count": 18,
-      "merged_pr_count": 1,
+      "merged_pr_count": 3,
       "data_complete": true
     },
     {
@@ -194,20 +212,10 @@
       "url": "https://github.com/DSACMS/decks",
       "description": "Repository containing various presentations delivered by the Digital Service at CMS",
       "errors": [],
-      "total_commit_count": 1,
-      "commits_per_week": {
-        "2026-W23": 1
-      },
-      "contributors": [
-        {
-          "name": "DinneK",
-          "location": "Denver, CO",
-          "company": "DSAC(Work), GSA (work) + personal projects",
-          "commit_count": 1,
-          "is_new": false
-        }
-      ],
-      "committer_count": 1,
+      "total_commit_count": 0,
+      "commits_per_week": {},
+      "contributors": [],
+      "committer_count": 0,
       "stargazers_count": 5,
       "watchers_count": 1,
       "forks_count": 2,
@@ -250,7 +258,7 @@
         }
       ],
       "committer_count": 3,
-      "stargazers_count": 15,
+      "stargazers_count": 19,
       "watchers_count": 3,
       "forks_count": 5,
       "merged_pr_count": 5,
@@ -261,11 +269,12 @@
       "url": "https://github.com/DSACMS/iv-cbv-payroll",
       "description": "Eligibility Made Easy (Emmy) using Consent-Based Verification (CBV) is a prototype that allows benefit applicants to verify their income directly using payroll providers. It is currently being piloted for testing and validation purposes.",
       "errors": [],
-      "total_commit_count": 121,
+      "total_commit_count": 128,
       "commits_per_week": {
         "2026-W28": 11,
         "2026-W27": 17,
         "2026-W24": 21,
+        "2026-W30": 7,
         "2026-W25": 22,
         "2026-W29": 14,
         "2026-W23": 21,
@@ -297,14 +306,14 @@
           "name": "serverless-mom",
           "location": "Portland, OR",
           "company": null,
-          "commit_count": 1,
+          "commit_count": 3,
           "is_new": false
         },
         {
           "name": "github-actions[bot]",
           "location": null,
           "company": null,
-          "commit_count": 3,
+          "commit_count": 5,
           "is_new": false
         },
         {
@@ -318,7 +327,7 @@
           "name": "bencalegari",
           "location": "San Francisco, CA",
           "company": null,
-          "commit_count": 16,
+          "commit_count": 17,
           "is_new": false
         },
         {
@@ -332,7 +341,7 @@
           "name": "daphnegold",
           "location": "Seattle",
           "company": "Nava PBC",
-          "commit_count": 10,
+          "commit_count": 11,
           "is_new": false
         },
         {
@@ -346,7 +355,7 @@
           "name": "tdooner",
           "location": "San Francisco, CA",
           "company": "@navapbc",
-          "commit_count": 15,
+          "commit_count": 16,
           "is_new": false
         }
       ],
@@ -354,7 +363,7 @@
       "stargazers_count": 26,
       "watchers_count": 6,
       "forks_count": 20,
-      "merged_pr_count": 128,
+      "merged_pr_count": 133,
       "data_complete": true
     },
     {
@@ -406,7 +415,7 @@
         }
       ],
       "committer_count": 1,
-      "stargazers_count": 2,
+      "stargazers_count": 4,
       "watchers_count": 0,
       "forks_count": 1,
       "merged_pr_count": 1,
@@ -496,7 +505,7 @@
       "commits_per_week": {},
       "contributors": [],
       "committer_count": 0,
-      "stargazers_count": 1,
+      "stargazers_count": 2,
       "watchers_count": 0,
       "forks_count": 8,
       "merged_pr_count": 0,
@@ -507,10 +516,10 @@
       "url": "https://github.com/DSACMS/testing-repository",
       "description": "Test repository for Repolinter Actions",
       "errors": [],
-      "total_commit_count": 21,
+      "total_commit_count": 22,
       "commits_per_week": {
         "2026-W26": 7,
-        "2026-W29": 1,
+        "2026-W29": 2,
         "2026-W25": 4,
         "2026-W27": 9
       },
@@ -526,7 +535,7 @@
           "name": "github-actions[bot]",
           "location": null,
           "company": null,
-          "commit_count": 1,
+          "commit_count": 2,
           "is_new": false
         },
         {
@@ -545,7 +554,7 @@
         }
       ],
       "committer_count": 4,
-      "stargazers_count": 0,
+      "stargazers_count": 1,
       "watchers_count": 0,
       "forks_count": 0,
       "merged_pr_count": 0,
@@ -601,9 +610,10 @@
       "url": "https://github.com/DSACMS/automated-codejson-generator",
       "description": "Github Action that allows for automated code.json creation and maintenance ",
       "errors": [],
-      "total_commit_count": 12,
+      "total_commit_count": 16,
       "commits_per_week": {
         "2026-W27": 5,
+        "2026-W30": 4,
         "2026-W25": 2,
         "2026-W26": 2,
         "2026-W28": 2,
@@ -621,7 +631,7 @@
           "name": "jjijon7000",
           "location": "berea, ky",
           "company": "berea college",
-          "commit_count": 2,
+          "commit_count": 3,
           "is_new": true
         },
         {
@@ -635,15 +645,29 @@
           "name": "github-actions[bot]",
           "location": null,
           "company": null,
+          "commit_count": 2,
+          "is_new": false
+        },
+        {
+          "name": "natalialuzuriaga",
+          "location": "San Francisco, CA",
+          "company": "@CMSgov (work) + personal projects",
+          "commit_count": 1,
+          "is_new": false
+        },
+        {
+          "name": "sachin-panayil",
+          "location": "NYC",
+          "company": "@DSACMS ",
           "commit_count": 1,
           "is_new": false
         }
       ],
-      "committer_count": 4,
-      "stargazers_count": 7,
+      "committer_count": 6,
+      "stargazers_count": 9,
       "watchers_count": 0,
       "forks_count": 5,
-      "merged_pr_count": 5,
+      "merged_pr_count": 6,
       "data_complete": true
     },
     {
@@ -746,27 +770,34 @@
       "url": "https://github.com/DSACMS/super-changelog",
       "description": "SuperChangelog is a tool for aggregating CHANGELOG.md files from individual repositories into one SUPERCHANGELOG",
       "errors": [],
-      "total_commit_count": 18,
+      "total_commit_count": 20,
       "commits_per_week": {
         "2026-W29": 3,
+        "2026-W30": 3,
+        "2026-W26": 1,
         "2026-W25": 9,
-        "2026-W27": 4,
-        "2026-W23": 1,
-        "2026-W26": 1
+        "2026-W27": 4
       },
       "contributors": [
         {
           "name": "zionmich",
           "location": null,
           "company": null,
-          "commit_count": 1,
+          "commit_count": 2,
           "is_new": true
+        },
+        {
+          "name": "DinneK",
+          "location": "Denver, CO",
+          "company": "DSAC(Work), GSA (work) + personal projects",
+          "commit_count": 1,
+          "is_new": false
         },
         {
           "name": "super-changelog-bot[bot]",
           "location": null,
           "company": null,
-          "commit_count": 7,
+          "commit_count": 8,
           "is_new": true
         },
         {
@@ -777,25 +808,18 @@
           "is_new": false
         },
         {
-          "name": "DinneK",
-          "location": "Denver, CO",
-          "company": "DSAC(Work), GSA (work) + personal projects",
-          "commit_count": 2,
-          "is_new": false
-        },
-        {
           "name": "actions-user",
           "location": null,
           "company": "@actions",
-          "commit_count": 7,
+          "commit_count": 8,
           "is_new": false
         }
       ],
       "committer_count": 5,
-      "stargazers_count": 0,
+      "stargazers_count": 5,
       "watchers_count": 0,
       "forks_count": 3,
-      "merged_pr_count": 14,
+      "merged_pr_count": 17,
       "data_complete": true
     },
     {
@@ -832,7 +856,10 @@
       "name": "outbound-tools-survey-2",
       "url": "https://github.com/DSACMS/outbound-tools-survey-2",
       "description": "Form to evaluate documentation clarity and user confidence in using checklist areas for repository reparation.",
-      "errors": [],
+      "errors": [
+        "Stats not ready for outbound-tools-survey-2 after 30s, skipping",
+        "Error getting light metrics for outbound-tools-survey-2: HTTPSConnectionPool(host='api.github.com', port=443): Max retries exceeded with url: /repos/DSACMS/outbound-tools-survey-2 (Caused by ProtocolError('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')))"
+      ],
       "total_commit_count": 0,
       "commits_per_week": {},
       "contributors": [],
@@ -841,7 +868,7 @@
       "watchers_count": 0,
       "forks_count": 1,
       "merged_pr_count": 0,
-      "data_complete": true
+      "data_complete": false
     },
     {
       "name": "code-gov",
@@ -887,7 +914,9 @@
       "name": "outbound-understanding-survey-1",
       "url": "https://github.com/DSACMS/outbound-understanding-survey-1",
       "description": "A web form to evaluate documentation clarity and user confidence in figuring out tier, benefits and risks",
-      "errors": [],
+      "errors": [
+        "Stats not ready for outbound-understanding-survey-1 after 30s, skipping"
+      ],
       "total_commit_count": 0,
       "commits_per_week": {},
       "contributors": [],
@@ -896,7 +925,7 @@
       "watchers_count": 0,
       "forks_count": 0,
       "merged_pr_count": 0,
-      "data_complete": true
+      "data_complete": false
     },
     {
       "name": "datajson-index-generator",
@@ -933,7 +962,7 @@
       "url": "https://github.com/DSACMS/npd-endpoint-api-validator",
       "description": null,
       "errors": [
-        "Stats not ready for npd-endpoint-api-validator after 30s, skipping"
+        "Error getting stats for npd-endpoint-api-validator: HTTP 204"
       ],
       "total_commit_count": 0,
       "commits_per_week": {},
@@ -1219,7 +1248,9 @@
       "name": "private-codejson-generator",
       "url": "https://github.com/DSACMS/private-codejson-generator",
       "description": "Form to generate code.json from private and public repos",
-      "errors": [],
+      "errors": [
+        "Stats not ready for private-codejson-generator after 30s, skipping"
+      ],
       "total_commit_count": 0,
       "commits_per_week": {},
       "contributors": [],
@@ -1228,7 +1259,7 @@
       "watchers_count": 0,
       "forks_count": 0,
       "merged_pr_count": 0,
-      "data_complete": true
+      "data_complete": false
     },
     {
       "name": "caseworkerportal",
@@ -1350,9 +1381,7 @@
       "name": "uswds",
       "url": "https://github.com/DSACMS/uswds",
       "description": "The U.S. Web Design System helps the federal government build fast, accessible, mobile-friendly websites.",
-      "errors": [
-        "Stats not ready for uswds after 30s, skipping"
-      ],
+      "errors": [],
       "total_commit_count": 0,
       "commits_per_week": {},
       "contributors": [],
@@ -1361,7 +1390,7 @@
       "watchers_count": 0,
       "forks_count": 0,
       "merged_pr_count": 0,
-      "data_complete": false
+      "data_complete": true
     },
     {
       "name": "wg-data-science",
@@ -1577,7 +1606,7 @@
         }
       ],
       "committer_count": 4,
-      "stargazers_count": 0,
+      "stargazers_count": 1,
       "watchers_count": 0,
       "forks_count": 1,
       "merged_pr_count": 2,
@@ -1588,7 +1617,7 @@
       "url": "https://github.com/DSACMS/medicare_monthly_enrollment_dashboard",
       "description": "Re-implement the Medicare Monthly Enrollment dashboard in an open-source framework that could be deployed to data.cms.gov in the future.",
       "errors": [],
-      "total_commit_count": 115,
+      "total_commit_count": 116,
       "commits_per_week": {
         "2026-W26": 5,
         "2026-W24": 22,
@@ -1596,7 +1625,7 @@
         "2026-W25": 5,
         "2026-W28": 36,
         "2026-W27": 11,
-        "2026-W29": 11
+        "2026-W29": 12
       },
       "contributors": [
         {
@@ -1638,7 +1667,7 @@
           "name": "haseebmalik18",
           "location": null,
           "company": null,
-          "commit_count": 25,
+          "commit_count": 26,
           "is_new": true
         },
         {
@@ -1657,10 +1686,10 @@
         }
       ],
       "committer_count": 8,
-      "stargazers_count": 0,
+      "stargazers_count": 5,
       "watchers_count": 0,
       "forks_count": 0,
-      "merged_pr_count": 32,
+      "merged_pr_count": 34,
       "data_complete": true
     },
     {
@@ -1668,12 +1697,13 @@
       "url": "https://github.com/DSACMS/code-book",
       "description": "An automated metadata pipeline to generate and validate Medicare Current Beneficiary Survey (MCBS) codebooks.",
       "errors": [],
-      "total_commit_count": 19,
+      "total_commit_count": 21,
       "commits_per_week": {
         "2026-W23": 3,
         "2026-W24": 1,
         "2026-W27": 8,
-        "2026-W29": 7
+        "2026-W29": 7,
+        "2026-W30": 2
       },
       "contributors": [
         {
@@ -1687,15 +1717,15 @@
           "name": "zionmich",
           "location": null,
           "company": null,
-          "commit_count": 18,
+          "commit_count": 20,
           "is_new": true
         }
       ],
       "committer_count": 2,
-      "stargazers_count": 1,
+      "stargazers_count": 5,
       "watchers_count": 0,
       "forks_count": 1,
-      "merged_pr_count": 0,
+      "merged_pr_count": 1,
       "data_complete": true
     },
     {
@@ -1703,10 +1733,11 @@
       "url": "https://github.com/DSACMS/MedicareClaimsPricerSource",
       "description": null,
       "errors": [],
-      "total_commit_count": 3,
+      "total_commit_count": 5,
       "commits_per_week": {
         "2026-W23": 1,
-        "2026-W24": 2
+        "2026-W24": 2,
+        "2026-W30": 2
       },
       "contributors": [
         {
@@ -1720,15 +1751,15 @@
           "name": "kmsheikh",
           "location": "Los Angeles, CA",
           "company": null,
-          "commit_count": 2,
+          "commit_count": 4,
           "is_new": true
         }
       ],
       "committer_count": 2,
-      "stargazers_count": 0,
+      "stargazers_count": 3,
       "watchers_count": 0,
       "forks_count": 0,
-      "merged_pr_count": 0,
+      "merged_pr_count": 1,
       "data_complete": true
     },
     {
@@ -1789,19 +1820,13 @@
       "url": "https://github.com/DSACMS/year-in-review",
       "description": "Generate a prototype \"Year in Review\" report of the OSPO's activity and impact.",
       "errors": [],
-      "total_commit_count": 6,
+      "total_commit_count": 16,
       "commits_per_week": {
-        "2026-W29": 5,
-        "2026-W25": 1
+        "2026-W25": 1,
+        "2026-W30": 9,
+        "2026-W29": 6
       },
       "contributors": [
-        {
-          "name": "isaac-rtc",
-          "location": "New York, NY",
-          "company": null,
-          "commit_count": 1,
-          "is_new": true
-        },
         {
           "name": "DinneK",
           "location": "Denver, CO",
@@ -1810,18 +1835,32 @@
           "is_new": true
         },
         {
+          "name": "zionmich",
+          "location": null,
+          "company": null,
+          "commit_count": 3,
+          "is_new": true
+        },
+        {
+          "name": "isaac-rtc",
+          "location": "New York, NY",
+          "company": null,
+          "commit_count": 6,
+          "is_new": true
+        },
+        {
           "name": "kmsheikh",
           "location": "Los Angeles, CA",
           "company": null,
-          "commit_count": 4,
+          "commit_count": 6,
           "is_new": true
         }
       ],
-      "committer_count": 3,
-      "stargazers_count": 0,
+      "committer_count": 4,
+      "stargazers_count": 6,
       "watchers_count": 0,
       "forks_count": 0,
-      "merged_pr_count": 0,
+      "merged_pr_count": 2,
       "data_complete": true
     },
     {
@@ -1879,11 +1918,12 @@
       "url": "https://github.com/DSACMS/codejson-action-e2e",
       "description": null,
       "errors": [],
-      "total_commit_count": 12,
+      "total_commit_count": 18,
       "commits_per_week": {
         "2026-W27": 2,
         "2026-W28": 6,
-        "2026-W29": 4
+        "2026-W29": 4,
+        "2026-W30": 6
       },
       "contributors": [
         {
@@ -1904,15 +1944,40 @@
           "name": "github-actions[bot]",
           "location": null,
           "company": null,
-          "commit_count": 8,
+          "commit_count": 14,
           "is_new": true
         }
       ],
       "committer_count": 3,
-      "stargazers_count": 0,
+      "stargazers_count": 2,
       "watchers_count": 0,
       "forks_count": 0,
       "merged_pr_count": 2,
+      "data_complete": true
+    },
+    {
+      "name": "fdsh-utils",
+      "url": "https://github.com/DSACMS/fdsh-utils",
+      "description": null,
+      "errors": [],
+      "total_commit_count": 1,
+      "commits_per_week": {
+        "2026-W30": 1
+      },
+      "contributors": [
+        {
+          "name": "decause-gov",
+          "location": null,
+          "company": "@CMSgov ",
+          "commit_count": 1,
+          "is_new": true
+        }
+      ],
+      "committer_count": 1,
+      "stargazers_count": 0,
+      "watchers_count": 0,
+      "forks_count": 0,
+      "merged_pr_count": 0,
       "data_complete": true
     }
   ],
@@ -1922,10 +1987,10 @@
     "testing-repository",
     "code-book",
     "super-changelog",
-    "ospo-guide",
-    "automated-codejson-generator",
     "codejson-action-e2e",
-    "fast-facts-2.0",
-    "emmy-agent-marketplace"
+    "automated-codejson-generator",
+    "year-in-review",
+    "ospo-guide",
+    "fast-facts-2.0"
   ]
 }
