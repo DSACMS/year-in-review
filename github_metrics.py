@@ -22,6 +22,7 @@ keyed by GitHub account, not raw git author).
 
 from github import Github  # type: ignore
 from github.GithubRetry import GithubRetry  # type: ignore
+from github.StatsContributor import StatsContributor  # type: ignore
 from datetime import datetime, timezone
 import json
 import os
@@ -29,6 +30,7 @@ import time
 import shutil
 import tempfile
 import subprocess
+import requests
 
 
 class GithubMetrics:
@@ -84,25 +86,25 @@ class GithubMetrics:
         return True
 
     def _get_repo_stats(self, repo, repo_data, max_wait=30, interval=2):
-        """GitHub computes contributor stats asynchronously; a repo that
-        hasn't been queried recently returns None (202) while it builds the
-        cache, so we poll briefly instead of failing.
-
-        Uses a real wall-clock deadline rather than counting sleep() calls,
-        since a single get_stats_contributors() call can itself take a while
-        internally (retrying on a transient error) - counting only our own
-        sleeps would let the loop run well past max_wait if that happens."""
+        # Calls the endpoint directly instead of repo.get_stats_contributors():
+        # PyGithub's own version retries 202 responses forever internally, ignoring any timeout we set.
+        url = f"{repo.url}/stats/contributors"
+        headers = {"Authorization": f"token {self.token}", "Accept": "application/vnd.github+json"}
         deadline = time.monotonic() + max_wait
         self._check_rate_limit()
         while time.monotonic() < deadline:
             try:
-                stats = repo.get_stats_contributors()
+                resp = requests.get(url, headers=headers, timeout=15)
             except Exception as e:
                 self._record_error(repo_data, f"Error getting stats for {repo.name}: {e}")
                 return []
-            if stats is not None:
-                return stats
-            time.sleep(interval)
+            if resp.status_code == 202:
+                time.sleep(interval)
+                continue
+            if resp.status_code != 200:
+                self._record_error(repo_data, f"Error getting stats for {repo.name}: HTTP {resp.status_code}")
+                return []
+            return [StatsContributor(repo._requester, dict(resp.headers), attrs) for attrs in resp.json()]
         self._record_error(repo_data, f"Stats not ready for {repo.name} after {max_wait}s, skipping")
         return []
 
@@ -151,7 +153,7 @@ class GithubMetrics:
                     continue
 
                 author, iso_date_str = line.split("|", 1)
-                commit_dt = datetime.fromisoformat(iso_date_str).replace(tzinfo=None)
+                commit_dt = datetime.fromisoformat(iso_date_str)
 
                 if author not in author_first_commit or commit_dt < author_first_commit[author]:
                     author_first_commit[author] = commit_dt
@@ -209,10 +211,12 @@ class GithubMetrics:
         becomes unreliable, so contributor data is instead derived by
         cloning the repo and parsing `git log` directly.
         """
-        try:
-            contributors_count = repo.get_contributors().totalCount
-        except Exception:
-            contributors_count = 101  # fail safe -> use git log fallback
+        contributors_count = len(stats)
+        if contributors_count > 50:
+            try:
+                contributors_count = repo.get_contributors().totalCount
+            except Exception:
+                contributors_count = 101  # fail safe -> use git log fallback
 
         if contributors_count > 100:
             print(
@@ -315,8 +319,7 @@ class GithubMetrics:
                     if pr.updated_at < self.start_date:
                         break  # sorted desc by update time; nothing older can match
                     if (
-                        pr.is_merged()
-                        and pr.merged_at
+                        pr.merged_at
                         and pr.merged_at >= self.start_date
                         and (not self.end_date or pr.merged_at <= self.end_date)
                     ):
